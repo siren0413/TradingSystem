@@ -29,9 +29,7 @@ public class App
         MessagePublisher publisher = configuration.createMessageSender(list.get(0));
         JMSMessageBuilder msgBuilder = new JMSMessageBuilderAdapter(publisher);
 
-        
-        Thread.sleep(100000);
-        
+
         msgBuilder.createTextMessage();
         TextMessage textmsg = msgBuilder.addToTextMessage("fdsfldsjflds");
         publisher.publishTextMessage(textmsg);
