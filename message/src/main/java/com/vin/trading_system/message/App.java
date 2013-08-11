@@ -1,11 +1,9 @@
 package com.vin.trading_system.message;
 
-import java.util.Enumeration;
+
 import java.util.List;
 
-import javax.jms.JMSException;
-import javax.jms.MapMessage;
-import javax.jms.MessageProducer;
+
 import javax.jms.TextMessage;
 
 import com.vin.trading_system.message.builder.JMSMessageBuilder;
@@ -34,7 +32,6 @@ public class App
         TextMessage textmsg = msgBuilder.addToTextMessage("fdsfldsjflds");
         publisher.publishTextMessage(textmsg);
 
-        
         
     }
 }

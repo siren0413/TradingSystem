@@ -13,6 +13,7 @@ import javax.jms.Topic;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQTopic;
+import org.apache.log4j.Logger;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -22,8 +23,10 @@ import com.vin.trading_system.message.cache.MessageConfigEntry;
 
 public class MessageConfiguration {
 
+	
+	private Logger LOGGER = Logger.getLogger(MessageConfiguration.class);
+	
 	public List<MessageConfigEntry> loadMessageReceiverConfiguration(String filename) {
-
 		try {
 
 			Document doc = XMLUtil.loadXMLFromClassPath(filename);
@@ -52,6 +55,7 @@ public class MessageConfiguration {
 	public List<MessageConfigEntry> loadMessageSenderConfiguration(String filename) {
 
 		try {
+			LOGGER.info("Loading Message Publisher Configuration...");
 			Document doc = XMLUtil.loadXMLFromClassPath(filename);
 			Element senders = XMLUtil.getSingleElementByName(doc, "senders");
 			List<Element> senderList = XMLUtil.getChildrenByName(senders, "sender");
@@ -63,6 +67,7 @@ public class MessageConfiguration {
 				entry.setSubject(XMLUtil.getChildByName(element, "subject").getText());
 				messageConfigEntryList.add(entry);
 			}
+			 
 
 			return messageConfigEntryList;
 
