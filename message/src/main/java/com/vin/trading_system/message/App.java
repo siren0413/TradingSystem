@@ -1,9 +1,7 @@
 package com.vin.trading_system.message;
 
 import java.util.List;
-import java.util.Properties;
 
-import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
