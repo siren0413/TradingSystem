@@ -13,6 +13,12 @@ public class MessageBlock {
 		return textBlock;
 	}
 
+	@Override
+	public String toString() {
+		return "MessageBlock [textBlock=" + textBlock + "]";
+	}
+
+	
 
 	
 }

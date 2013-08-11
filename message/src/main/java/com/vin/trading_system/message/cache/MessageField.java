@@ -26,9 +26,11 @@ public class MessageField {
 	public String getValue() {
 		return value;
 	}
-	
-	
-	
-	
+
+	@Override
+	public String toString() {
+		return "MessageField [key=" + key + ", value=" + value + "]";
+	}
+
 	
 }
