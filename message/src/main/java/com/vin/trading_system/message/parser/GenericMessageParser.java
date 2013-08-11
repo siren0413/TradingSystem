@@ -8,20 +8,26 @@ import javax.jms.MapMessage;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
+import org.apache.log4j.Logger;
+
 import com.vin.trading_system.message.cache.MessageType;
+import com.vin.trading_system.message.initialize.MessageListener;
 
 public class GenericMessageParser {
 
 	protected Message message;
+	protected final Logger LOGGER = Logger.getLogger(MessageListener.class);
 	
 	public GenericMessageParser(Message message) {
 		super();
 		this.message = message;
 	}
 
+	@SuppressWarnings("unchecked")
 	public String getMessageBlock() {
 		if(message == null) {
-			//TODO
+			LOGGER.error("Unable to parse message --> message == null!");
+			return null;
 		}
 		
 		try {
@@ -40,8 +46,7 @@ public class GenericMessageParser {
 				return sb.toString();
 			}
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to parse message["+message+"]",e);
 		}
 		
 		return null;

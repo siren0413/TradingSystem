@@ -5,12 +5,15 @@ import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.Session;
 
+import org.apache.log4j.Logger;
+
 public class MessageListener {
 
 	private final MessageConsumer consumer;
 	private final Session session;
 	private final Connection connection;
 	private final MessageHandler messageHandler;
+	private final Logger LOGGER = Logger.getLogger(MessageListener.class);
 	
 	
 	public MessageListener(MessageConsumer consumer, Session session, Connection connection, MessageHandler messageHandler) {
@@ -22,26 +25,25 @@ public class MessageListener {
 		try {
 			consumer.setMessageListener(messageHandler);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to set message listener for receiver!",e);
 		}
 	}
 	
 	public void start() {
 		try {
 			connection.start();
+			LOGGER.info("Starting message listener...");
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to start connection!",e);
 		}
 	}
 	
 	public void stop() {
 		try {
 			connection.stop();
+			LOGGER.info("Stopping message listener...");
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to start connection!",e);
 		}
 	}
 	

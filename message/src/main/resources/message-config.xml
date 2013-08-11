@@ -15,6 +15,11 @@
 			<network>tcp://192.168.1.237:61616</network>
 			<subject>TestTopic</subject>
 		</sender>
+		<sender>
+			<name>sender1</name>
+			<network>tcp://192.168.1.237:61616</network>
+			<subject>TestTopic</subject>
+		</sender>
 
 	</senders>
 

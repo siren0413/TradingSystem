@@ -7,6 +7,8 @@ import javax.jms.MessageProducer;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import org.apache.log4j.Logger;
+
 import com.vin.trading_system.message.cache.MessageType;
 
 public class MessagePublisher {
@@ -14,6 +16,7 @@ public class MessagePublisher {
 	private final MessageProducer producer;
 	private final Session session;
 	private final Connection connection;
+	private final Logger LOGGER = Logger.getLogger(MessageListener.class);
 
 	public MessagePublisher(MessageProducer producer, Session session, Connection connection) {
 		super();
@@ -27,10 +30,9 @@ public class MessagePublisher {
 		try {
 			msg.setJMSType(MessageType.TEXT.toString());
 			producer.send(msg);
-			
+			LOGGER.debug("publish message:"+msg);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to send text message[" + msg + "]", e);
 		}
 
 	}
@@ -38,31 +40,28 @@ public class MessagePublisher {
 	public void publishMapMessage(MapMessage msg) {
 
 		try {
-			
 			msg.setJMSType(MessageType.MAP.toString());
 			producer.send(msg);
+			LOGGER.debug("publish message:"+msg);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to send map message[" + msg + "]", e);
 		}
 
 	}
-	
+
 	public void start() {
 		try {
 			connection.start();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to start connection!",e);
 		}
 	}
-	
+
 	public void stop() {
 		try {
 			connection.stop();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to start connection!",e);
 		}
 	}
 

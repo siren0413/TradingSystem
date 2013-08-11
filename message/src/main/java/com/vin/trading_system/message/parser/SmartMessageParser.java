@@ -16,24 +16,22 @@ public class SmartMessageParser extends GenericMessageParser implements MessageP
 
 	public MessageField getMessageField(String key) {
 		if(message == null) {
-			//TODO
+			LOGGER.error("Unable to parse message --> message == null!");
+			return null;
 		}
 		try {
 			if(message.getJMSType().equals(MessageType.TEXT.toString())) {
-				//TODO
+				LOGGER.warn("Unable to get message field --> message type != TEXT !");
 			}else if (message.getJMSType().equals(MessageType.MAP.toString())){
 				MapMessage msg = (MapMessage)message;
 				MessageField field = new MessageField(key, msg.getString(key));
 				return field;
 			}
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to parse message["+message+"]",e);
 		}
 		
 		return null;
-		
-		
 	}
 
 	

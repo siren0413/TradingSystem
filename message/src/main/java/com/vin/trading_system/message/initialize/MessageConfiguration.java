@@ -23,12 +23,11 @@ import com.vin.trading_system.message.cache.MessageConfigEntry;
 
 public class MessageConfiguration {
 
-	
 	private Logger LOGGER = Logger.getLogger(MessageConfiguration.class);
-	
+
 	public List<MessageConfigEntry> loadMessageReceiverConfiguration(String filename) {
 		try {
-
+			LOGGER.info("Loading Message Receiver Configuration from "+filename+"...");
 			Document doc = XMLUtil.loadXMLFromClassPath(filename);
 			Element receivers = XMLUtil.getSingleElementByName(doc, "receivers");
 			List<Element> receiverList = XMLUtil.getChildrenByName(receivers, "receiver");
@@ -44,9 +43,9 @@ public class MessageConfiguration {
 			return messageConfigEntryList;
 
 		} catch (JDOMException e) {
-			e.printStackTrace();
+			LOGGER.error(" Unable to load message publisher! ",e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(" Unable to load message publisher! ",e);
 		}
 
 		return null;
@@ -55,7 +54,7 @@ public class MessageConfiguration {
 	public List<MessageConfigEntry> loadMessageSenderConfiguration(String filename) {
 
 		try {
-			LOGGER.info("Loading Message Publisher Configuration...");
+			LOGGER.info("Loading Message Publisher Configuration from "+filename+"...");
 			Document doc = XMLUtil.loadXMLFromClassPath(filename);
 			Element senders = XMLUtil.getSingleElementByName(doc, "senders");
 			List<Element> senderList = XMLUtil.getChildrenByName(senders, "sender");
@@ -67,14 +66,13 @@ public class MessageConfiguration {
 				entry.setSubject(XMLUtil.getChildByName(element, "subject").getText());
 				messageConfigEntryList.add(entry);
 			}
-			 
 
 			return messageConfigEntryList;
 
 		} catch (JDOMException e) {
-			e.printStackTrace();
+			LOGGER.error(" Unable to load message publisher! ",e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.error(" Unable to load message publisher! ",e);
 		}
 
 		return null;
@@ -84,40 +82,41 @@ public class MessageConfiguration {
 		String name = config.getName();
 		String network = config.getNetwork();
 		String subject = config.getSubject();
+		LOGGER.info("Creating message receiver with name["+name+"] network["+network+"] subject["+subject+"]");
+		
 		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(network);
 
 		Connection connection = null;
 		try {
 			connection = factory.createConnection();
 		} catch (JMSException e) {
-			e.printStackTrace();
+			LOGGER.error("Unable to create connection! ",e);
 		}
 
 		// Create Topic
 		Topic topic = new ActiveMQTopic(subject);
 		try {
 			Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-			MessageListener listener = new MessageListener(session.createConsumer(topic), session,connection, handler);
+			MessageListener listener = new MessageListener(session.createConsumer(topic), session, connection, handler);
 			return listener;
 		} catch (JMSException e) {
-			e.printStackTrace();
+			LOGGER.error("Unable to create session! ",e);
 		}
-
 		return null;
-
 	}
 
 	public MessagePublisher createMessageSender(MessageConfigEntry config) {
 		String name = config.getName();
 		String network = config.getNetwork();
 		String subject = config.getSubject();
+		LOGGER.info("Creating message sender with name["+name+"] network["+network+"] subject["+subject+"]");
 		ActiveMQConnectionFactory factory = new ActiveMQConnectionFactory(network);
 
 		Connection connection = null;
 		try {
 			connection = factory.createConnection();
 		} catch (JMSException e) {
-			e.printStackTrace();
+			LOGGER.error("Unable to create connection!",e);
 		}
 
 		// Create Topic
@@ -127,7 +126,7 @@ public class MessageConfiguration {
 			MessagePublisher publisher = new MessagePublisher(session.createProducer(topic), session, connection);
 			return publisher;
 		} catch (JMSException e) {
-			e.printStackTrace();
+			LOGGER.error("Unable to create session!",e);
 		}
 
 		return null;

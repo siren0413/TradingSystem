@@ -6,13 +6,16 @@ import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 
+import org.apache.log4j.Logger;
+
 import com.vin.trading_system.message.initialize.MessageListener;
 import com.vin.trading_system.message.initialize.MessagePublisher;
 
 public class JMSMessageBuilderAdapter implements JMSMessageBuilder {
 	
-	private Message message;
-	private MessagePublisher publisher;
+	protected Message message;
+	protected MessagePublisher publisher;
+	protected final Logger LOGGER = Logger.getLogger(MessageListener.class);
 	
 	public JMSMessageBuilderAdapter() {
 		super();
@@ -25,29 +28,28 @@ public class JMSMessageBuilderAdapter implements JMSMessageBuilder {
 
 	public Message createMapMessage() {
 		if(publisher == null) {
-			//TODO
+			LOGGER.error("Unable to create map-message --> publisher == null!");
+			return null;
 		}
 		Session session = publisher.getSession();
 		try {
 			message = session.createMapMessage();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to create map-message!",e);
 		}
-		
 		return message;
 	}
 
 	public Message createTextMessage() {
 		if(publisher == null) {
-			//TODO
+			LOGGER.error("Unable to create text-message --> publisher == null!");
+			return null;
 		}
 		Session session = publisher.getSession();
 		try {
 			message = session.createTextMessage();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to create text-message!",e);
 		}
 		
 		return message;
@@ -55,13 +57,13 @@ public class JMSMessageBuilderAdapter implements JMSMessageBuilder {
 
 	public MapMessage addToMapMessage(String key, String value) {
 		if(!(message instanceof MapMessage)) {
-			//TODO
+			LOGGER.error("Unable to add to map-message --> message type != MAP !");
+			return null;
 		}
 		try {
 			((MapMessage)message).setString(key, value);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to add to map-message!",e);
 		}
 		
 		return (MapMessage)message;
@@ -69,13 +71,13 @@ public class JMSMessageBuilderAdapter implements JMSMessageBuilder {
 
 	public TextMessage addToTextMessage(String text) {
 		if(!(message instanceof TextMessage)) {
-			//TODO
+			LOGGER.error("Unable to add to text-message --> message type != TEXT !");
+			return null;
 		}
 		try {
 			((TextMessage)message).setText(text);
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to add to text-message!",e);
 		}
 		
 		return (TextMessage)message;
@@ -85,8 +87,7 @@ public class JMSMessageBuilderAdapter implements JMSMessageBuilder {
 		try {
 			message.clearBody();
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOGGER.error("Unable to clear message body!",e);
 		}
 		return message;
 	}
