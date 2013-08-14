@@ -43,7 +43,16 @@ public class MessageListener {
 			connection.stop();
 			LOGGER.info("Stopping message listener...");
 		} catch (JMSException e) {
-			LOGGER.error("Unable to start connection!",e);
+			LOGGER.error("Unable to stop connection!",e);
+		}
+	}
+	
+	public void close() {
+		try {
+			connection.close();
+			LOGGER.info("Closing message listener...");
+		} catch (JMSException e) {
+			LOGGER.error("Unable to close connection!",e);
 		}
 	}
 	
@@ -59,6 +68,11 @@ public class MessageListener {
 	public javax.jms.MessageListener getMessageHandler() {
 		return messageHandler;
 	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+	
 	
 	
 	

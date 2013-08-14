@@ -2,6 +2,7 @@ package com.vin.trading_system.message;
 
 import java.util.List;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.TextMessage;
 
@@ -18,7 +19,7 @@ import com.vin.trading_system.message.parser.MessageParser;
 import com.vin.trading_system.message.parser.SmartMessageParser;
 
 public class App {
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, JMSException {
 		MessageConfiguration configuration = new MessageConfiguration();
 		List<MessageConfigEntry> list = configuration.loadMessageSenderConfiguration("message-config.xml");
 		// System.out.println(list.get(0).getSubject());
@@ -31,15 +32,19 @@ public class App {
 
 		List<MessageConfigEntry> list2 = configuration.loadMessageReceiverConfiguration("message-config.xml");
 		MessageListener listener = configuration.createMessageReceiver(list2.get(0), new MyMessageHandler());
+		
 		listener.start();
-
+		publisher.start();
+		
 		publisher.publishTextMessage(textmsg);
 
 		// for(int i = 0 ; i < 100; i ++) {
 		// Thread.sleep(1000);
 		// Logger.getLogger(App.class).info("dsalfjdfkjlasldhfklashdf");
 		// }
-
+		
+		publisher.close();
+		listener.close();
 	}
 }
 

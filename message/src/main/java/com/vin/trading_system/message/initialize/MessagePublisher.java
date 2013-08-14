@@ -52,6 +52,7 @@ public class MessagePublisher {
 	public void start() {
 		try {
 			connection.start();
+			LOGGER.info("Starting message publisher...");
 		} catch (JMSException e) {
 			LOGGER.error("Unable to start connection!",e);
 		}
@@ -60,8 +61,18 @@ public class MessagePublisher {
 	public void stop() {
 		try {
 			connection.stop();
+			LOGGER.info("Stopping message publisher...");
 		} catch (JMSException e) {
-			LOGGER.error("Unable to start connection!",e);
+			LOGGER.error("Unable to stop connection!",e);
+		}
+	}
+	
+	public void close() {
+		try {
+			connection.close();
+			LOGGER.info("Closing message publisher...");
+		} catch (JMSException e) {
+			LOGGER.error("Unable to close connection!",e);
 		}
 	}
 
@@ -71,5 +82,11 @@ public class MessagePublisher {
 	public Session getSession() {
 		return session;
 	}
+
+	public Connection getConnection() {
+		return connection;
+	}
+	
+	
 
 }

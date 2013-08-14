@@ -116,7 +116,7 @@ public class MessageConfiguration {
 		} catch (JMSException e) {
 			LOGGER.error("Unable to create connection!",e);
 		}
-
+		
 		// Create Topic
 		Topic topic = new ActiveMQTopic(subject);
 		try {
