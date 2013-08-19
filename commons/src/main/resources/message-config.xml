@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<receivers>
+		<receiver>
+			<name>receiver</name>
+			<network>tcp://192.168.1.237:61616</network>
+			<subject>TestTopic</subject>
+		</receiver>
+
+	</receivers>
+
+	<senders>
+		<sender>
+			<name>sender</name>
+			<network>tcp://192.168.1.237:61616</network>
+			<subject>TestTopic</subject>
+		</sender>
+		<sender>
+			<name>sender1</name>
+			<network>tcp://192.168.1.237:61616</network>
+			<subject>TestTopic</subject>
+		</sender>
+
+	</senders>
+
+
+</config>

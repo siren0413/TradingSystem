@@ -11,7 +11,7 @@ import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
 public class XMLUtil {
-
+	
 	public static Document loadXMLFromClassPath(String fileName) throws JDOMException, IOException {
 		SAXBuilder sb = new SAXBuilder();
 		InputStream in = XMLUtil.class.getClassLoader().getResourceAsStream(fileName);
